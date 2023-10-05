@@ -6,7 +6,7 @@
 /*   By: gmattei <gmattei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 17:57:21 by gmattei           #+#    #+#             */
-/*   Updated: 2023/10/05 12:45:57 by gmattei          ###   ########.fr       */
+/*   Updated: 2023/10/05 15:33:42 by gmattei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 # define CUB3D_H
 
 /*
-    ------------LIBRARIES------------
+	------------LIBRARIES------------
 */
 
+# include "../ctm/ctm_libs/ctm_libs.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
 
 /*
-    ------------COLORS & STYLES------------
+	------------COLORS & STYLES------------
 */
 
 // COLORS
@@ -61,16 +62,64 @@
 # define SOLUTION "\033[1;33m"
 
 /*
-    ------------FUNCTIONS------------
+	------------STRUCTURES------------
 */
 
 /*
-    Error Handler
-    Prints error and optional solution (0 for no solution)
-    Returns -1
+	--|res_x|--:		Resolution X
+	--|res_y|--:		Resolution Y
+	--|no|--:			North texture path
+	--|so|--:			South texture path
+	--|we|--:			West texture path
+	--|ea|--:			East texture path
+	--|s|--:			Sprite texture path
+	--|f|--:			Floor color
+	--|c|--:			Ceiling color
+	--|map|--:		Map
 */
-int	err(char *error, char *solution);
+typedef struct s_map
+{
+	int		res_x;
+	int		res_y;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	char	*s;
+	int		f;
+	int		c;
+	char	**map;
+}	t_map;
 
+/*
+	------------FUNCTIONS------------
+*/
 
+/*
+	---Error Handler----
+	Prints error and optional solution (0 for no solution)
+	Returns -1
+	
+	int err(char *error, char *solution);
+*/
+int		err(char *error, char *solution);
+
+/*
+	---Map Validator----
+	Checks if the map is valid
+	Returns -1 if invalid
+	
+	int map_check(char *line);
+*/
+int		map_check(char *line);
+
+/*
+	---Get Line----
+	Reads a line from a file descriptor
+	Returns the line, NULL for error
+	
+	char *get_line(int fd);
+*/
+char	*get_line(int fd);
 
 #endif

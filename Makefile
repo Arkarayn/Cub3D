@@ -1,4 +1,4 @@
-NAME = cub3d
+NAME = cub3D
 
 RM_DIR = rm -rf
 
@@ -18,7 +18,7 @@ LIB_DIR = ctm/lib/
 
 LIB = ctm_libs.a
 
-SRCS_FILES = main.c  error_handling.c\
+SRCS_FILES = main.c  error_handling.c misc.c \
 
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
