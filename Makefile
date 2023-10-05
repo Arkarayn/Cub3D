@@ -64,10 +64,9 @@ fclean: clean
 re: fclean all
 	clear
 
-push:
+commit:
 	git add .
-	git commit -m "auto commit"
-	git push
+	git commit
 
-.PHONY: all clean fclean re push
+.PHONY: all clean fclean re commit
 .SILENT:

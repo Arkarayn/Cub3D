@@ -1,0 +1,6 @@
+[submodule "ctm"]
+	path = ctm
+	url = https://github.com/Mattei-Giovanni/Custom_42_libraries.git
+[submodule "minilibx-linux"]
+	path = minilibx-linux
+	url = https://github.com/42Paris/minilibx-linux.git
