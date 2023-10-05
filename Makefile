@@ -67,6 +67,7 @@ re: fclean all
 commit:
 	git add .
 	git commit
+	git push
 
 .PHONY: all clean fclean re commit
 .SILENT:
