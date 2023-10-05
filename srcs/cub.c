@@ -12,27 +12,29 @@
 
 #include "../headers/cub3d.h"
 
-int	texture_check(char *line)
+int	texture_check(t_cube *cube, char *line)
 {
 
 }
 
-int	fc_check(char *line)
+int	fc_check(t_cube *cube, char *line)
 {
 	
 }
 
-int	res_check(char *line)
+int	res_check(t_cube *cube, char *line)
 {
 
 }
 
-int	map_check(char *line)
+int	map_check(t_cube *cube, char *line)
 {
 
 }
 
-int	cub_check(int fd)
+int	cub_check(t_cube *cube, int fd)
 {
+	char	*line;
 
+	
 }

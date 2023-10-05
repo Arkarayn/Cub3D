@@ -21,3 +21,15 @@ int	err(char *error, char *solution)
 		printf("\n\n");
 	return (-1);
 }
+
+int	error_init_check(int fd, int argc, char **argv)
+{
+	if (argc != 2)
+		return (err("Wrong number of arguments", "Try ./cub3d maps/map.cub"));
+	if (ft_strncmp(&argv[1][ft_strlen(argv[1]) - 4], ".cub", 4) != 0)
+		return (err("Wrong file extension", "Try ./cub3d maps/map.cub"));
+	if (fd <= 0)
+		return (err("Map file not found", \
+		"Try ./cub3d maps/map.cub or check the path"));
+	return (0);
+}

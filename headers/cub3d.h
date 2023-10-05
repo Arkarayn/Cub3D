@@ -75,7 +75,9 @@
 	--|s|--:			Sprite texture path
 	--|f|--:			Floor color
 	--|c|--:			Ceiling color
-	--|map|--:		Map
+	--|map|--:			Map
+
+	Map structure
 */
 typedef struct s_map
 {
@@ -92,32 +94,55 @@ typedef struct s_map
 }	t_map;
 
 /*
+	--|map|--:			Map
+
+	General structure
+*/
+typedef struct s_cube
+{
+	t_map	map;
+}	t_cube;
+
+/*
 	------------FUNCTIONS------------
 */
 
 /*
 	---Error Handler----
+
 	Prints error and optional solution (0 for no solution)
 	Returns -1
-	
+
 	int err(char *error, char *solution);
 */
 int		err(char *error, char *solution);
 
 /*
+	---Error Default Checker----
+
+	Various starting checks
+	Returns -1 if invalid
+
+	int error_init_check(int fd, int argc, char **argv);
+*/
+int	error_init_check(int fd, int argc, char **argv);
+
+/*
 	---Map Validator----
+
 	Checks if the map is valid
 	Returns -1 if invalid
-	
+
 	int map_check(char *line);
 */
 int		map_check(char *line);
 
 /*
 	---Get Line----
+
 	Reads a line from a file descriptor
 	Returns the line, NULL for error
-	
+
 	char *get_line(int fd);
 */
 char	*get_line(int fd);
