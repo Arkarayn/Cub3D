@@ -18,7 +18,7 @@ LIB_DIR = ctm/lib/
 
 LIB = ctm_libs.a
 
-SRCS_FILES = main.c  error_handling.c misc.c \
+SRCS_FILES = main.c error_handling.c mlx_init.c mlx_draw.c \
 
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 

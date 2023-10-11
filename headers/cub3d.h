@@ -6,7 +6,7 @@
 /*   By: gmattei <gmattei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 17:57:21 by gmattei           #+#    #+#             */
-/*   Updated: 2023/10/05 15:33:42 by gmattei          ###   ########.fr       */
+/*   Updated: 2023/10/11 16:56:13 by gmattei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,19 @@
 */
 
 # include "../ctm/ctm_libs/ctm_libs.h"
+# include "../minilibx-linux/mlx.h"
+# include <math.h>
+# include <X11/keysym.h>
+# include <X11/X.h>
 # include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
 # include <fcntl.h>
+
+/*
+	------------DEFINES------------
+*/
+
+# define WIN_WIDTH 1600 
+# define WIN_HEIGHT 900
 
 /*
 	------------COLORS & STYLES------------
@@ -66,42 +75,37 @@
 */
 
 /*
-	--|res_x|--:		Resolution X
-	--|res_y|--:		Resolution Y
-	--|no|--:			North texture path
-	--|so|--:			South texture path
-	--|we|--:			West texture path
-	--|ea|--:			East texture path
-	--|s|--:			Sprite texture path
-	--|f|--:			Floor color
-	--|c|--:			Ceiling color
-	--|map|--:			Map
-
-	Map structure
+	---Image---
+	void *mlx_img ----> mlx image
+	char *addr ----> image address
+	int bpp ----> bits per pixel
+	int endian ----> endian
+	int line_len ----> line length
 */
-typedef struct s_map
+typedef struct s_img
 {
-	int		res_x;
-	int		res_y;
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
-	char	*s;
-	int		f;
-	int		c;
-	char	**map;
-}	t_map;
+	void	*mlx_img;
+	char	*addr;
+	int		bpp;
+	int		endian;
+	int		line_len;
+}	t_img;
 
 /*
-	--|map|--:			Map
-
-	General structure
+	---Mlx---
+	void *mlx ----> mlx pointer
+	void *win ----> mlx window
+	t_img *img ----> mlx image
 */
-typedef struct s_cube
+typedef struct s_mlx
 {
-	t_map	map;
-}	t_cube;
+	void	*mlx_ptr;
+	void	*win_ptr;
+	int		floor_color;
+	int		ceiling_color;
+	char	**map;
+	t_img	img;
+}	t_mlx;
 
 /*
 	------------FUNCTIONS------------
@@ -121,30 +125,95 @@ int		err(char *error, char *solution);
 	---Error Default Checker----
 
 	Various starting checks
-	Returns -1 if invalid
+	Returns -1 if invalid, 0 otherwise
 
 	int error_init_check(int fd, int argc, char **argv);
 */
-int	error_init_check(int fd, int argc, char **argv);
+int		error_init_check(int fd, int argc, char **argv);
 
 /*
-	---Map Validator----
+	---Display Destroyer---
 
-	Checks if the map is valid
-	Returns -1 if invalid
+	Free mlx pointers and exit
+	Returns -1
 
-	int map_check(char *line);
+	int destroy_mlx(t_mlx *data);
 */
-int		map_check(char *line);
+int		destroy_mlx(t_mlx *data);
 
 /*
-	---Get Line----
+	---Mouse Handler---
 
-	Reads a line from a file descriptor
-	Returns the line, NULL for error
+	Handles mouse events
+	Returns 0
 
-	char *get_line(int fd);
+	int mouse_handler(int keycode, t_mlx *data);
 */
-char	*get_line(int fd);
+int		mouse_handler(int keycode, t_mlx *data);
+
+/*
+	---Key Handler---
+
+	Handles keyboard events
+	Returns 0
+
+	int key_handler(int keycode, t_mlx *data);
+*/
+int		key_handler(int keycode, t_mlx *data);
+
+/*
+	---Hooks Initialization---
+
+	Initializes hooks
+
+	void hooks_init(t_mlx *data);
+*/
+void	hooks_init(t_mlx *data);
+
+/*
+	---Mlx Initialization---
+
+	Initializes mlx
+	Returns -1 if error, 0 otherwise
+
+	int ft_init(t_mlx *data);
+*/
+int		init(t_mlx *data);
+
+/*
+	---Pixel Drawer---
+
+	Puts a pixel on the screen
+
+	void my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
+*/
+void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
+
+/*
+	---Window Labels---
+
+	Displays window labels
+
+	void ft_draw(t_mlx *data);
+*/
+void	window_labels(t_mlx *data);
+
+/*
+	---Floor & Ceiling Drawer---
+
+	Draws floor and ceiling
+
+	void draw_floor_ceiling(t_mlx *data);
+*/
+void	draw_floor_ceiling(t_mlx *data);
+
+/*
+	---Draw---
+
+	Draws everything
+
+	void draw(t_mlx *data);
+*/
+void	draw(t_mlx *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gmattei <gmattei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 17:41:40 by gmattei           #+#    #+#             */
-/*   Updated: 2023/10/05 15:37:12 by gmattei          ###   ########.fr       */
+/*   Updated: 2023/10/11 15:22:19 by gmattei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 int	main(int argc, char **argv)
 {
-	t_cube	*cube;
-	int		fd;
+	t_mlx	*mlx;
 
-	fd = open(argv[1], O_RDONLY);
-	if (error_init_check(fd, argc, argv) < 0)
+	mlx = (t_mlx *)malloc(sizeof(t_mlx));
+	if (!mlx)
+		free(mlx);
+	else if (error_init_check(open(argv[1], O_RDONLY), argc, argv) == -1)
 		return (-1);
-	cube = malloc(sizeof(t_cube));
-	if (cub_check(cube, fd) == -1)
-		return (err("Map file is not valid", "Check the map"));
-	close(fd);
+	init(mlx);
 	return (0);
 }
