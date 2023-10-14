@@ -6,7 +6,7 @@
 /*   By: gmattei <gmattei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:49:08 by gmattei           #+#    #+#             */
-/*   Updated: 2023/10/11 17:00:56 by gmattei          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:29:48 by gmattei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ int	mouse_handler(int keycode, t_mlx *data)
 
 int	key_handler(int keycode, t_mlx *data)
 {
-	if (keycode == XK_Escape || keycode == XK_q)
+	if (keycode == XK_Escape)
 		return (destroy_mlx(data));
-	else
-		printf("keycode: %d\n", keycode);
 	return (0);
 }
 
@@ -47,7 +45,7 @@ void	hooks_init(t_mlx *data)
 	mlx_hook(data->win_ptr, 17, 1L << 17, &destroy_mlx, data);
 	mlx_loop(data->mlx_ptr);
 }
-
+// to eliminate
 void	map_creation(t_mlx *data)
 {
 	int		fd;
@@ -80,9 +78,10 @@ int	init(t_mlx *data)
 			&data->img.line_len, &data->img.endian);
 	if (!data->mlx_ptr || !data->win_ptr || !data->img.mlx_img)
 		return (err("An error has occured", "Please try again"));
-	data->floor_color = 0x0f0ff0;
-	data->ceiling_color = 0xf0ff0f;
+	data->floor_color = 0x0f0ff0; // to eliminate
+	data->ceiling_color = 0xf0ff0f; // to eliminate
 	map_creation(data);
+	// to eliminate
 	for(int i = 0; data->map[i]; i++)
 		printf("%s", data->map[i]);
 	draw(data);
