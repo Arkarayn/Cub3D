@@ -6,7 +6,7 @@
 /*   By: gmattei <gmattei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:57:23 by gmattei           #+#    #+#             */
-/*   Updated: 2023/10/11 15:29:10 by gmattei          ###   ########.fr       */
+/*   Updated: 2023/11/07 16:32:36 by gmattei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	window_labels(t_mlx *data)
 	(void)data;
 }
 
-void	draw_floor_ceiling(t_mlx *data)
+/* void	draw_floor_ceiling(t_mlx *data)
 {
 	int	x;
 	int	y;
@@ -52,11 +52,12 @@ void	draw_floor_ceiling(t_mlx *data)
 		x = 0;
 		y++;
 	}
-}
+} */
 
 void	draw(t_mlx *data)
 {
-	draw_floor_ceiling(data);
+	ft_raycasting(data);
+	mlx_clear_window(data->mlx_ptr, data->win_ptr);
 	window_labels(data);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, \
 	data->img.mlx_img, 0, 0);

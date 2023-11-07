@@ -6,7 +6,7 @@
 /*   By: gmattei <gmattei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 17:57:21 by gmattei           #+#    #+#             */
-/*   Updated: 2023/10/11 16:56:13 by gmattei          ###   ########.fr       */
+/*   Updated: 2023/11/07 16:41:05 by gmattei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <X11/X.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <stdbool.h>
 
 /*
 	------------DEFINES------------
@@ -74,29 +75,15 @@
 	------------STRUCTURES------------
 */
 
-/*
-	---Image---
-	void *mlx_img ----> mlx image
-	char *addr ----> image address
-	int bpp ----> bits per pixel
-	int endian ----> endian
-	int line_len ----> line length
-*/
 typedef struct s_img
 {
 	void	*mlx_img;
 	char	*addr;
 	int		bpp;
-	int		endian;
 	int		line_len;
+	int		endian;
 }	t_img;
 
-/*
-	---Mlx---
-	void *mlx ----> mlx pointer
-	void *win ----> mlx window
-	t_img *img ----> mlx image
-*/
 typedef struct s_mlx
 {
 	void	*mlx_ptr;
@@ -106,6 +93,100 @@ typedef struct s_mlx
 	char	**map;
 	t_img	img;
 }	t_mlx;
+
+typedef struct s_map
+{
+	int		cardinal[4];
+	char	*tex_path[4];
+	int		colors[2][3];
+
+	int		posx;
+	int		posy;
+	int		x;
+	int		y;
+	int		**maprix;
+	bool	oriented;
+	bool	n;
+	bool	s;
+	bool	e;
+	bool	w;
+}	t_map;
+
+typedef struct s_cube
+{
+	t_map	*map;
+	char	*mapath;
+
+	t_mlx	*mlx;
+	int		fd;
+
+}	t_cube;
+
+typedef struct s_texture
+{
+	int		*data;
+	int		width;
+	int		height;
+}				t_texture;
+
+typedef struct s_ray
+{
+	float		dir_x;
+	float		dir_y;
+	int			map_x;
+	int			map_y;
+	float		delta_dist_x;
+	float		delta_dist_y;
+	float		dist_x;
+	float		dist_y;
+	float		perp_wall_dist;
+	float		wall_x;
+	int			x;
+	int			color;
+	float		step;
+	float		tex_pos;
+	int			draw_end;
+	int			draw_start;
+	t_texture	texture;
+	int			step_x;
+	int			step_y;
+	int			hit;
+	int			side;
+}				t_ray;
+
+typedef struct s_player
+{
+	float		pos_x;
+	float		pos_y;
+	float		dir_x;
+	float		dir_y;
+	float		plane_x;
+	float		plane_y;
+	float		move_speed;
+	float		rot_speed;
+	float		ray_dir_x;
+	float		ray_dir_y;
+}				t_player;
+
+typedef struct s_mappo
+{
+	char		**matrix;
+	int			rows;
+	int			cols;
+}				t_mappo;
+
+typedef struct s_game
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+	t_img		img;
+	t_mappo		map;
+	t_player	player;
+	int			win_width;
+	int			win_height;
+	int			*z_buffer;
+	t_texture	texture;
+}				t_game;
 
 /*
 	------------FUNCTIONS------------
@@ -215,5 +296,53 @@ void	draw_floor_ceiling(t_mlx *data);
 	void draw(t_mlx *data);
 */
 void	draw(t_mlx *data);
+
+int		ft_wall_height(t_ray *ray, int win_height);
+void	ft_texture_coord(t_ray *ray, t_game *game);
+void	ft_render(t_ray *ray, t_game *game, int y);
+void	ft_draw_wall(t_ray *ray, t_game *game);
+void	ft_raycasting(t_game *game);
+int		ft_wall_collision_detection(t_mappo *map, t_ray ray);
+t_ray	ft_init_side_distance(t_ray ray, t_player *player);
+void	ft_get_player_pos(t_game *game);
+void	ft_get_player_pov(t_player *player, double camera_x);
+void	set_plr_pov(t_player *player, char dir);
+
+int		check(int ac);
+int		innit(char **av, t_map *map, t_cube *cube);
+void	map_innit(t_cube *cube, t_map *map);
+void	destroy_cube(t_cube *cube);
+void	add_element(char **tok, int *id, int type, t_cube *cube);
+void	add_path(char **tok, int i, int type, t_cube *cube);
+int		open_path(t_cube *cube);
+
+//	Tools
+int		open_path(t_cube *cube);
+int		puterr(int n);
+void	get_next_close(char *line, t_cube *cube);
+
+//	Parsing
+void	parser(t_cube *cube);
+int		check_next_line(char *line, int *id, t_cube *cube);
+int		check_next_map(int start, char *line, t_cube *cube);
+int		mapalloc(char *line, t_cube *cube);
+int		map_sizecheck(char *line, int *x, int *y, t_cube *cube);
+int		line_walls(int i, char *line, t_cube *cube);
+int		add_orient(char c, t_cube *cube);
+int		linecmp(int i, char *prev_line, char *line);
+void	add_map(int start, t_cube *cube);
+void	add_element(char **tok, int *id, int type, t_cube *cube);
+void	add_path(char **tok, int i, int type, t_cube *cube);
+void	add_color(int type, char **tok, t_cube *cube);
+void	add_rgb(int type, char **rgb, t_cube *cube);
+int		is_map(char *prev_line, char *line, t_cube *cube);
+int		is_valid(char c);
+int		is_orient(char **tok);
+int		is_mapstart(char *line, char **tok, t_cube *cube);
+void	free_next_line(char **tok);
+
+void	gotomap(char **line, int start, t_cube *cube);
+void	fill_map(char *line, t_cube *cube);
+int		coordinate(int i, char *line);
 
 #endif
