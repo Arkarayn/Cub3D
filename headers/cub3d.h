@@ -6,7 +6,7 @@
 /*   By: gmattei <gmattei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 17:57:21 by gmattei           #+#    #+#             */
-/*   Updated: 2023/11/07 16:41:05 by gmattei          ###   ########.fr       */
+/*   Updated: 2023/11/07 17:32:13 by gmattei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ typedef struct s_cube
 
 }	t_cube;
 
-typedef struct s_texture
+typedef struct s_texture //da sistemare
 {
 	int		*data;
 	int		width;
